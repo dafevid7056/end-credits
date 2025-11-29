@@ -1,0 +1,309 @@
+/* ------------------------ BODY AND GENERAL STYLING ------------------------ */
+
+#three-bg {
+    position: fixed; /* Stays in place while you scroll */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Puts it BEHIND the text */
+    pointer-events: none; /* Lets you click text 'through' the canvas */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #000000;
+    /* background-color: #fdfdfd; */
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+#welcome-page {
+    /* This creates the scroll behavior */
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory; /* Forces the browser to snap to sections */
+    scroll-behavior: smooth;
+}
+
+#welcome-page section {
+    /* Dimensions */
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    
+    /* Layout - Centers the text perfectly */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    /* Spacing */
+    padding: 4rem 10%;
+    box-sizing: border-box;
+    
+    /* Snapping Logic */
+    scroll-snap-align: start; /* The top of the section snaps to top of window */
+    
+    /* Initial Animation State (Hidden) */
+    opacity: 0;
+    transition: all 1s ease-out; /* Slow, gentle fade */
+}
+
+#button {
+    align-items: center; /* Button stays centered */
+}
+
+#submits {
+    text-align: left;
+}
+
+#submits.showing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #07020aff;
+}
+
+.credit-row {
+    text-align: center; /* Centers the whole line */
+    margin-bottom: 10px; /* Space between lines */
+}
+
+/* Make the dots lighter color */
+.dots {
+    color: gray;
+}
+
+#welcome-page section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---- Content wrapper inside sections which I'll later move off-center ---- */
+
+#welcome-page section p,
+#welcome-page section blockquote,
+#welcome-page section h1 {
+    max-width: 600px; /* Makes text boxes narrower */
+    width: 100%;
+}
+
+/* ----------- Individual section positioning - Each one different ---------- */
+
+#intro {
+    align-items: center;
+}
+
+#intro p {
+    max-width: 35ch;
+    text-align: center;
+}
+
+#uncoco-quote {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 20vh;
+}
+
+#uncoco-quote blockquote {
+    max-width: 40ch;
+    text-align: left;
+    border-left: 4px solid white;
+    padding-left: 2rem;
+}
+
+#analysis-intro {
+    align-items: flex-start;
+    text-align: left;
+}
+
+#analysis-intro p {
+    max-width: 30ch;
+    margin-right: 5vw;
+}
+
+#tennov-quote {
+    align-items: flex-end;
+}
+
+#tennov-quote blockquote {
+    max-width: 50ch;
+    text-align: justify;
+    border-right: 4px solid white;
+    border-left: none;
+    padding-right: 2rem;
+}
+
+#conclusion {
+    align-items: flex-start;
+}
+
+#conclusion p {
+    max-width: 28ch;
+    line-height: 1.8;
+    margin-left: 5vw;
+}
+
+#invitation {
+    align-items: center;
+}
+
+#invitation h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#invitation p {
+    max-width: 40ch;
+    text-align: center;
+}
+
+#final-prompt {
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-bottom: 15vh;
+}
+
+#final-prompt p {
+    max-width: 45ch;
+    text-align: right;
+}
+
+/* ----------------------------- Lyrics styling ----------------------------- */
+
+#uncoco-quote blockquote {
+    max-width: 650px;
+    font-style: italic;
+    padding: 20px 40px;
+    margin: 20px 0;
+}
+
+.lyrics-line .spanish {
+    font-weight: 500;
+    display: block;
+}
+
+.lyrics-line .english {
+    font-style: italic;
+    opacity: 0.85;
+    display: block;
+    margin-top: 3px;
+}
+
+#tennov-quote blockquote {
+    max-width: 580px;
+    margin-left: 80px; /* Pushes it slightly inward from left */
+    font-style: italic;
+    padding: 20px 40px;
+    margin: 20px 0;
+}
+
+/* ------------------ HIDE AND SHOW END CREDITS PAGE STYLES ----------------- */
+
+.endcreditsPage {
+
+    display: none;
+    opacity: 0;
+    transition:
+        opacity 1s,
+        display 1s allow-discrete;
+}
+
+.showing {
+  opacity: 1;
+  display: block;
+}
+
+@starting-style {
+  .showing {
+    opacity: 0;
+  }
+}
+
+/* ------------------------ ROLLING CREDITS ANIMATION ----------------------- */
+
+/* Credits Container */
+.credits-container {
+    text-align: center;
+    height: 60vh;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end; /* Start from bottom */
+    justify-content: center;
+    position: relative;
+}
+
+/* The scrolling credits */
+.credits-scroll {
+    max-width: 600px;
+    text-align: center;
+    
+    /* The animation that makes it scroll */
+    animation: scrollUp 20s linear infinite;
+}
+
+/* Scroll animation - moves from bottom to top */
+@keyframes scrollUp {
+    from {
+        transform: translateY(100%); /* Start below screen */
+    }
+    to {
+        transform: translateY(-100%); /* End above screen */
+    }
+}
+
+/* Individual credit styling */
+.credit-item {
+    padding: 2px;
+}
+
+.credit-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.credit-role {
+    font-size: 18px;
+    font-style: italic;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.credit-song {
+    font-size: 16px;
+    opacity: 0.6;
+    margin-bottom: 5px;
+}
+
+.credit-note {
+    font-size: 14px;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+/* Fade effect at top and bottom */
+.credits-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to bottom, #07020aff, transparent);
+    z-index: 1;
+}
+
+.credits-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to top, #07020aff, transparent);
+    z-index: 1;
+}
