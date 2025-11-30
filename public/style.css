@@ -7,7 +7,7 @@
     width: 100vw;
     height: 100vh;
     z-index: -1; /* Puts it BEHIND the text */
-    pointer-events: none; /* Lets you click text 'through' the canvas */
+    pointer-events: auto; /* Lets you click text 'through' the canvas */
 }
 
 body {
@@ -49,6 +49,17 @@ body {
     /* Initial Animation State (Hidden) */
     opacity: 0;
     transition: all 1s ease-out; /* Slow, gentle fade */
+    pointer-events: none; /* Prevents interaction when not visible */
+}
+
+#welcome-page section p, 
+#welcome-page section h1,
+#welcome-page section button,
+#welcome-page section a,
+#welcome-page section input,
+#welcome-page section textarea,
+#welcome-page section label {
+    pointer-events: auto; /* Clicks allowed for text objects and buttons */
 }
 
 #button {
