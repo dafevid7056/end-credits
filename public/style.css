@@ -1,17 +1,35 @@
+/* ---------------------------------- FONTS --------------------------------- */
+
+@font-face {
+    font-family: 'Feroniapi';
+    src: url(./fonts/Feroniapi-MediumItalic.woff2) format('woff2'),
+
+}
+
+@font-face {
+    font-family: 'Redaction';
+    src: url(./fonts/Redaction-Bold.woff2) format('woff2');
+    src: url(./fonts/Redaction-Italic.woff2) format('woff2');
+    src: url(./fonts/Redaction-Regular.woff2) format('woff2');
+}
+
 /* ------------------------ BODY AND GENERAL STYLING ------------------------ */
 
 #three-bg {
-    position: fixed; /* Stays in place while you scroll */
+    position: fixed;
+    /* Stays in place while you scroll */
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; /* Puts it BEHIND the text */
-    pointer-events: auto; /* Lets you click text 'through' the canvas */
+    z-index: -1;
+    /* Puts it BEHIND the text */
+    pointer-events: auto;
+    /* Lets you click text 'through' the canvas */
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Feroniapi, Arial, sans-serif;
     color: #000000;
     /* background-color: #fdfdfd; */
     background-color: transparent;
@@ -24,7 +42,8 @@ body {
     /* This creates the scroll behavior */
     height: 100vh;
     overflow-y: scroll;
-    scroll-snap-type: y mandatory; /* Forces the browser to snap to sections */
+    scroll-snap-type: y mandatory;
+    /* Forces the browser to snap to sections */
     scroll-behavior: smooth;
 }
 
@@ -33,54 +52,163 @@ body {
     min-height: 100vh;
     width: 100%;
     box-sizing: border-box;
-    
+
     /* Layout - Centers the text perfectly */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+
     /* Spacing */
     padding: 4rem 10%;
     box-sizing: border-box;
-    
+
     /* Snapping Logic */
-    scroll-snap-align: start; /* The top of the section snaps to top of window */
-    
+    scroll-snap-align: start;
+    /* The top of the section snaps to top of window */
+
     /* Initial Animation State (Hidden) */
     opacity: 0;
-    transition: all 1s ease-out; /* Slow, gentle fade */
-    pointer-events: none; /* Prevents interaction when not visible */
+    transition: all 1s ease-out;
+    /* Slow, gentle fade */
+    pointer-events: none;
+    /* Prevents interaction when not visible */
 }
 
-#welcome-page section p, 
+#welcome-page section p,
 #welcome-page section h1,
 #welcome-page section button,
 #welcome-page section a,
 #welcome-page section input,
 #welcome-page section textarea,
 #welcome-page section label {
-    pointer-events: auto; /* Clicks allowed for text objects and buttons */
+    pointer-events: auto;
+    /* Clicks allowed for text objects and buttons */
 }
 
 #button {
-    align-items: center; /* Button stays centered */
+    align-items: center;
+    /* Button stays centered */
 }
 
+/* ------------------------- SUBMISSIONS FOOTER BAR ------------------------- */
+
 #submits {
-    text-align: left;
+    font-family: Redaction, Arial, sans-serif;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    background-color: #07020a;
+    padding: 20px 30px;
+    box-sizing: border-box;
+    z-index: 100;
+
+    /* Default Hidden State */
+    display: none;
+    opacity: 0;
+    transition: opacity 1s, display 1s allow-discrete;
 }
 
 #submits.showing {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    background-color: #07020aff;
+    align-items: center;
+    opacity: 1;
 }
 
+/* Form Layout */
+#submission-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1400px;
+    /* Allow it to stretch wide */
+}
+
+/* Inputs */
+#submission-form input[type="text"],
+#submission-form textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #333;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Specific Widths */
+#name {
+    width: 120px;
+}
+
+#role {
+    width: 160px;
+}
+
+#song {
+    width: 160px;
+}
+
+#note {
+    flex-grow: 1;
+    width: 180px;
+    min-width: 120px;
+    resize: none;
+    height: 33px;
+    /* Match height of inputs */
+}
+
+/* ACTION AREA (Checkbox + Button) */
+.submit-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-left: 10px;
+    border-left: 1px solid #333;
+    /* Visual separator from text inputs */
+    margin-left: 10px;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+#submit-button {
+    background-color: rgb(202, 202, 202);
+    color: #07020aff;
+    border: none;
+    padding: 10px 25px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 2px;
+}
+
+#submit-button:hover {
+    background-color: #ccc;
+}
+
+/* ------------------------------ CREDITS STYLE ----------------------------- */
+
 .credit-row {
-    text-align: center; /* Centers the whole line */
-    margin-bottom: 10px; /* Space between lines */
+    font-family: Redaction, Arial, sans-serif;
+    text-align: center;
+    /* Centers the whole line */
+    margin-bottom: 10px;
+    /* Space between lines */
 }
 
 /* Make the dots lighter color */
@@ -93,13 +221,25 @@ body {
     transform: translateY(0);
 }
 
+/* Make all names uppercase */
+.credit-row .name,
+.note-container span:first-child {
+    font-style: italic;
+    text-transform: uppercase;
+}
+
 /* ---- Content wrapper inside sections which I'll later move off-center ---- */
 
 #welcome-page section p,
 #welcome-page section blockquote,
 #welcome-page section h1 {
-    max-width: 600px; /* Makes text boxes narrower */
+    max-width: 600px;
+    /* Makes text boxes narrower */
     width: 100%;
+}
+
+#welcome-page section h1 {
+font-family: Feroniapi, Arial, sans-serif;
 }
 
 /* ----------- Individual section positioning - Each one different ---------- */
@@ -163,6 +303,7 @@ body {
 }
 
 #invitation h1 {
+    font-family: Feroniapi, Arial, sans-serif;
     text-align: center;
     margin-bottom: 2rem;
 }
@@ -199,14 +340,15 @@ body {
 
 .lyrics-line .english {
     font-style: italic;
-    opacity: 0.85;
+    opacity: 0.5;
     display: block;
     margin-top: 3px;
 }
 
 #tennov-quote blockquote {
     max-width: 580px;
-    margin-left: 80px; /* Pushes it slightly inward from left */
+    margin-left: 80px;
+    /* Pushes it slightly inward from left */
     font-style: italic;
     padding: 20px 40px;
     margin: 20px 0;
@@ -224,25 +366,28 @@ body {
 }
 
 .showing {
-  opacity: 1;
-  display: block;
+    opacity: 1;
+    display: block;
 }
 
 @starting-style {
-  .showing {
-    opacity: 0;
-  }
+    .showing {
+        opacity: 0;
+    }
 }
 
 /* ------------------------ ROLLING CREDITS ANIMATION ----------------------- */
 
 /* Credits Container */
 .credits-container {
+    font-family: Redaction, Arial, sans-serif;
     text-align: center;
-    height: 60vh;
+    height: 83vh;
+    margin-bottom: 120px;
     overflow: hidden;
     display: flex;
-    align-items: flex-end; /* Start from bottom */
+    align-items: flex-end;
+    /* Start from bottom */
     justify-content: center;
     position: relative;
 }
@@ -251,7 +396,7 @@ body {
 .credits-scroll {
     max-width: 600px;
     text-align: center;
-    
+
     /* The animation that makes it scroll */
     animation: scrollUp 20s linear infinite;
 }
@@ -259,10 +404,13 @@ body {
 /* Scroll animation - moves from bottom to top */
 @keyframes scrollUp {
     from {
-        transform: translateY(100%); /* Start below screen */
+        transform: translateY(100%);
+        /* Start below screen */
     }
+
     to {
-        transform: translateY(-100%); /* End above screen */
+        transform: translateY(-100%);
+        /* End above screen */
     }
 }
 
@@ -291,6 +439,7 @@ body {
 }
 
 .credit-note {
+    font-family: Redaction, Arial, sans-serif;
     font-size: 14px;
     opacity: 0.7;
     font-style: italic;
@@ -314,7 +463,7 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100px;
+    height: 150px;
     background: linear-gradient(to top, #07020aff, transparent);
     z-index: 1;
 }

@@ -150,10 +150,8 @@ loader.load('models/Bangkok_Clean.glb', function (gltf) {
             //SETUP SAMPLER
             const sampler = new MeshSurfaceSampler(child).build();
             
-            //HOW MANY POINTS?
-            // A whole city needs fewer points per building, or it lags.
-            // Let's try 1500 points per building mesh.
-            const count = 500; 
+            //HOW MANY POINTS PER MESH
+            const count = 1500; 
             
             const vertices = [];
             const tempPosition = new THREE.Vector3();

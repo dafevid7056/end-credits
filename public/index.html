@@ -181,25 +181,24 @@
     <!-- ----------------------------------------------------------------------- -->
     <!--                             SUBMISSION FORM                             -->
     <!-- ----------------------------------------------------------------------- -->
-    <section class="endcreditsPage" id="submits">
+     <!-- I chose to use a footer element for the submission form to semantically indicate its role as a persistent
+     section at the bottom of the page. -->
+    <footer class="endcreditsPage" id="submits">
         <form id="submission-form">
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name" required>
-            <input type="checkbox" id="hide" name="hide">
-            <label for="hide">Hide</label><br><br>
+            <input type="text" id="name" name="name" placeholder="Name" required>
+            <input type="text" id="role" name="role" placeholder="Role (e.g. The girl next door)" required>
+            <input type="text" id="song" name="song" placeholder="Song - Artist" required>
+            <textarea id="note" name="note" rows="1" placeholder="Your note..." required></textarea>
 
-            <label for="role">Role in your story:</label><br>
-            <input type="text" id="role" name="role" required><br><br>
-
-            <label for="note">Thank-you (or f-you) note:</label><br>
-            <textarea id="note" name="note" rows="4" cols="50" required></textarea><br><br>
-
-            <label for="song">Soundtrack song for that chapter:</label><br>
-            <input type="text" id="song" name="song" required><br><br>
-
-            <button type="submit" id="submit-button">Submit</button>
+            <div class="submit-wrapper">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="hide" name="hide">
+                    <label for="hide">Redact</label>
+                </div>
+                <button type="submit" id="submit-button">ADD CREDIT</button>
+            </div>
         </form>
-    </section>
+    </footer>
     <!-- ----------------------------------------------------------------------- -->
     <!--                                 SCRIPTS                                 -->
     <!-- ----------------------------------------------------------------------- -->
