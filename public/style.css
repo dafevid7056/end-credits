@@ -31,7 +31,9 @@
 body {
     font-family: Feroniapi, Arial, sans-serif;
     color: #000000;
-    /* background-color: #fdfdfd; */
+    font-size: 107%;
+    line-height: 1.6;
+    background-color: #fdfdfd;
     background-color: transparent;
     margin: 0;
     padding: 0;
@@ -382,7 +384,7 @@ font-family: Feroniapi, Arial, sans-serif;
 .credits-container {
     font-family: Redaction, Arial, sans-serif;
     text-align: center;
-    height: 83vh;
+    height: 90vh;
     margin-bottom: 120px;
     overflow: hidden;
     display: flex;

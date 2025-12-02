@@ -3,21 +3,21 @@
 /* -------------------------------------------------------------------------- */
 
 const placeholders = [
-    { name: "Jay Tommy", role: "The Dreamer"},
-    { name: "Ophelia Duckings", role: "The Tragic Lover"},
+    { name: "Jay Tommy", role: "The Dreamer" },
+    { name: "Ophelia Duckings", role: "The Tragic Lover" },
     { name: "Werther Miller", role: "Freckled girl", song: "Creep - Radiohead", note: "You gave me strength." },
     { name: "Echo Batsky", role: "The Voice", song: "Dreams - Fleetwood Mac", note: "I'll always remember your kind words." },
     { name: "Dante Burtis", role: "The Pilgrim", song: "Video Games - Lana del Rey", note: "This was possible thanks to you." },
-    { name: "Orpheus Lee", role: "Salesman"},
-    { name: "Helga Pataki", role: "Woman in pink"},
-    { name: "Michael Reeds", role: "Construction Worker"},
+    { name: "Orpheus Lee", role: "Salesman" },
+    { name: "Helga Pataki", role: "Woman in pink" },
+    { name: "Michael Reeds", role: "Construction Worker" },
     { name: "Stefano Rossi", role: "Poet on the street", song: "Mad World - Tears for Fears", note: "Great skills and a keen eye for detail." },
-    { name: "Fantine Pluck", role: "The Martyr"},
+    { name: "Fantine Pluck", role: "The Martyr" },
 ];
-    
-    /* -------------------------------------------------------------------------- */
-    /*                    HTML SECTIONS SCROLLING FADING EFFECT                   */
-    /* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                    HTML SECTIONS SCROLLING FADING EFFECT                   */
+/* -------------------------------------------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
     // Select all sections inside the welcome page
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 entry.target.classList.add('visible');
             } else {
                 // Remove class to make it fade out again when you scroll away
-                entry.target.classList.remove('visible'); 
+                entry.target.classList.remove('visible');
             }
         });
     }, {
@@ -50,7 +50,7 @@ window.addEventListener('load', function () {
     /* -------------------------------------------------------------------------- */
     /*                              GLOBAL VARIABLES                              */
     /* -------------------------------------------------------------------------- */
-    
+
     let nameForm = document.getElementById('name');
     let roleForm = document.getElementById('role');
     let noteForm = document.getElementById('note');
@@ -80,21 +80,21 @@ window.addEventListener('load', function () {
                 let finalCreditsList = [];
 
                 // Add all real submissions first (so users see themselves at the top)
-            for (let i = 0; i < realSubmissions.length; i++) {
-                finalCreditsList.push(realSubmissions[i]);
-            }
-
-            // Calculate how many placeholders I need.
-            let placeholdersNeeded = minCredits - realSubmissions.length;
-
-            // If I need placeholders, grab them from the local array
-            if (placeholdersNeeded > 0) {
-                for (let i = 0; i < placeholdersNeeded; i++) {
-                    // Use the modulo operator (%) to loop the placeholder list. If we need more ghosts than we have defined then they will start to repeat.
-                    let ghost = placeholders[i % placeholders.length];
-                    finalCreditsList.push(ghost);
+                for (let i = 0; i < realSubmissions.length; i++) {
+                    finalCreditsList.push(realSubmissions[i]);
                 }
-            }
+
+                // Calculate how many placeholders I need.
+                let placeholdersNeeded = minCredits - realSubmissions.length;
+
+                // If I need placeholders, grab them from the local array
+                if (placeholdersNeeded > 0) {
+                    for (let i = 0; i < placeholdersNeeded; i++) {
+                        // Use the modulo operator (%) to loop the placeholder list. If we need more ghosts than we have defined then they will start to repeat.
+                        let ghost = placeholders[i % placeholders.length];
+                        finalCreditsList.push(ghost);
+                    }
+                }
                 // Get the container where credits will appear
                 let creditsList = document.getElementById('credits-list');
 
@@ -267,6 +267,9 @@ window.addEventListener('load', function () {
                 songForm.value = '';
                 hide.checked = false;
 
+                // Show success message
+                alert('Thank you for your submission! Your credit has been added.');
+                
                 // Reload the credits to show the new submission
                 loadCredits();
             })
