@@ -9,7 +9,7 @@ let app = express();
 const { Database } = require("quickmongo"); 
 const db = new Database(process.env.MONGODB_URI);
 
-// Connect to the Cloud
+// Connect to the termud
 db.on("ready", () => {
     console.log("MongoDB connected");
 });

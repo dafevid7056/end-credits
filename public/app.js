@@ -16,10 +16,24 @@ const placeholders = [
 ];
 
 /* -------------------------------------------------------------------------- */
+/*                              GLOBAL VARIABLES                              */
+/* -------------------------------------------------------------------------- */
+var audio = new Audio('/sounds/limerence.m4a')
+let nameForm = document.getElementById('name');
+let roleForm = document.getElementById('role');
+let noteForm = document.getElementById('note');
+let songForm = document.getElementById('song');
+let hide = document.getElementById('hide');
+let submitButton = document.getElementById('submit-button');
+let goButton = document.getElementById('goButton');
+const creditsPage = document.querySelectorAll(".endcreditsPage");
+
+/* -------------------------------------------------------------------------- */
 /*                    HTML SECTIONS SCROLLING FADING EFFECT                   */
 /* -------------------------------------------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
+
     // Select all sections inside the welcome page
     const sections = document.querySelectorAll('#welcome-page section');
 
@@ -47,18 +61,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener('load', function () {
 
-    /* -------------------------------------------------------------------------- */
-    /*                              GLOBAL VARIABLES                              */
-    /* -------------------------------------------------------------------------- */
 
-    let nameForm = document.getElementById('name');
-    let roleForm = document.getElementById('role');
-    let noteForm = document.getElementById('note');
-    let songForm = document.getElementById('song');
-    let hide = document.getElementById('hide');
-    let submitButton = document.getElementById('submit-button');
-    let goButton = document.getElementById('goButton');
-    const creditsPage = document.querySelectorAll(".endcreditsPage");
+    /* --------------------------- START PLAYING MUSIC -------------------------- */
+
+    let beginButton = document.getElementById('beginButton');
+
+    beginButton.addEventListener('click', function () {
+        // Start audio
+        audio.loop = true; // Optional: loop the audio
+        audio.volume = 0.5; // Optional: set volume (0.0 to 1.0)
+
+        audio.play().catch(error => {
+            console.log('Audio playback failed:', error);
+        });
+
+        // Scroll to next section
+        document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
+    });
 
     /* -------------------------------------------------------------------------- */
     /*                         LOAD CREDITS FROM DATABASE                         */
@@ -269,7 +288,7 @@ window.addEventListener('load', function () {
 
                 // Show success message
                 alert('Thank you for your submission! Your credit has been added.');
-                
+
                 // Reload the credits to show the new submission
                 loadCredits();
             })

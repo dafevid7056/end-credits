@@ -87,7 +87,13 @@ body {
     /* Clicks allowed for text objects and buttons */
 }
 
+#begin-section {
+    align-items: center;
+    /* Button stays centered */
+}
+
 #button {
+    height: 100vh;
     align-items: center;
     /* Button stays centered */
 }
@@ -235,24 +241,34 @@ body {
 #welcome-page section p,
 #welcome-page section blockquote,
 #welcome-page section h1 {
-    max-width: 600px;
     /* Makes text boxes narrower */
     width: 100%;
 }
 
-#welcome-page section h1 {
-font-family: Feroniapi, Arial, sans-serif;
-}
-
 /* ----------- Individual section positioning - Each one different ---------- */
 
-#intro {
-    align-items: center;
+
+#welcome-page #welcome-text h1,
+#welcome-page #welcome-text h2{
+    text-align: center;
 }
 
-#intro p {
-    max-width: 35ch;
-    text-align: center;
+#welcome-page #intro h1 {
+    text-align: start;
+}
+
+#welcome-page #welcome-text p,
+#welcome-page #intro p {
+    max-width: 49ch;
+    text-align: justify;
+}
+
+#welcome-page #welcome-text #begin-section {
+    padding: 0px;
+    position: relative;
+    min-height: 10vh;
+    height: auto;
+    align-items: center;
 }
 
 #uncoco-quote {
@@ -270,11 +286,17 @@ font-family: Feroniapi, Arial, sans-serif;
 
 #analysis-intro {
     align-items: flex-start;
-    text-align: left;
+    text-align: justify;
 }
 
 #analysis-intro p {
-    max-width: 30ch;
+    max-width: 49ch;
+    margin-right: 5vw;
+}
+
+#analysis-intro h1 {
+    align-items: flex-start;
+    max-width: 49ch;
     margin-right: 5vw;
 }
 
@@ -291,12 +313,19 @@ font-family: Feroniapi, Arial, sans-serif;
 }
 
 #conclusion {
+    text-align: justify;
     align-items: flex-start;
 }
 
 #conclusion p {
-    max-width: 28ch;
+    max-width: 49ch;
     line-height: 1.8;
+    margin-left: 5vw;
+    text-align: justify;
+}
+
+#conclusion h1 {
+    align-items: flex-start;
     margin-left: 5vw;
 }
 
@@ -311,21 +340,25 @@ font-family: Feroniapi, Arial, sans-serif;
 }
 
 #invitation p {
-    max-width: 40ch;
-    text-align: center;
+    max-width: 49ch;
+    text-align: justify;
 }
 
-#final-prompt {
+#welcome-page #final-prompt {
     align-items: flex-end;
     justify-content: flex-end;
     padding-bottom: 15vh;
 }
 
-#final-prompt p {
-    max-width: 45ch;
+#welcome-page #final-prompt p {
+    max-width: 40ch;
     text-align: right;
 }
 
+#welcome-page #final-prompt h1 {
+    max-width: 40ch;
+    text-align: right;
+}
 /* ----------------------------- Lyrics styling ----------------------------- */
 
 #uncoco-quote blockquote {
