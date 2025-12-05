@@ -2,15 +2,29 @@
 
 @font-face {
     font-family: 'Feroniapi';
-    src: url(./fonts/Feroniapi-MediumItalic.woff2) format('woff2'),
-
+    src: url('./fonts/Feroniapi-MediumItalic.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'Redaction';
-    src: url(./fonts/Redaction-Bold.woff2) format('woff2');
-    src: url(./fonts/Redaction-Italic.woff2) format('woff2');
-    src: url(./fonts/Redaction-Regular.woff2) format('woff2');
+    src: url('./fonts/Redaction-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Redaction';
+    src: url('./fonts/Redaction-Italic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Redaction';
+    src: url('./fonts/Redaction-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 
 /* ------------------------ BODY AND GENERAL STYLING ------------------------ */
@@ -29,15 +43,51 @@
 }
 
 body {
-    font-family: Feroniapi, Arial, sans-serif;
+    font-family: Redaction, Arial, sans-serif;
     color: #000000;
-    font-size: 107%;
+    font-size: 100%;
     line-height: 1.6;
     background-color: #fdfdfd;
     background-color: transparent;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+}
+
+h1, h2 {
+    font-family: Feroniapi, Arial, sans-serif;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;  /* Explicitly set h1 size */
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 1.8rem;  /* Explicitly set h2 size (smaller than h1) */
+    font-weight: 500;
+}
+
+.down-symbols {
+    display: inline-block;
+    font-size: 1.1rem;
+    color: #07020a;
+    margin-top: 2rem;
+    
+    animation: bounce 2s ease-in-out infinite;
+}
+/* Animation for the down arrows to indicate scrolling */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0); /* Stay at start */
+    }
+    40% {
+        transform: translateY(-10px); /* Move up */
+    }
+    60% {
+        transform: translateY(-5px); /* Small little hop */
+    }
 }
 
 #welcome-page {
@@ -70,10 +120,25 @@ body {
 
     /* Initial Animation State (Hidden) */
     opacity: 0;
+    /* Slow fade */
     transition: all 1s ease-out;
-    /* Slow, gentle fade */
-    pointer-events: none;
     /* Prevents interaction when not visible */
+    pointer-events: none;
+}
+
+/* This class controls the WIDTH of the text blocks */
+.text-wrapper {
+    width: 100%;
+    max-width: 50ch;
+    box-sizing: border-box;
+    text-align: left; /* Default alignment inside the box */
+}
+
+/* This ensures the text inside fills the wrapper */
+.text-wrapper h1,
+.text-wrapper p {
+    width: 100%;
+    margin: 0 0 1rem 0;
 }
 
 #welcome-page section p,
@@ -92,30 +157,92 @@ body {
     /* Button stays centered */
 }
 
-#button {
-    height: 100vh;
+#button,
+#intermission-button {
     align-items: center;
     /* Button stays centered */
+}
+
+.button {
+    font-family: Feroniapi, Arial, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: underline;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#final-prompt {
+    display: none;
+    max-height: inherit;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                      INTERMISSION STYLING & ANIMATION                      */
+/* -------------------------------------------------------------------------- */
+
+.intermission-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers everything horizontally */
+    text-align: center;  /* Centers the text inside the blocks */
+    max-width: 600px;
+}
+
+.intermission-content ul {
+    list-style: none; /* Remove bullets */
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.intermission-content li {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    opacity: 0; /* Hidden by default for animation */
+    transition: opacity 2s ease; /* Slow fade */
+}
+
+.intermission-content h1,
+.intermission-content p,
+.intermission-content section {
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.fade-in-active {
+    opacity: 1 !important;
+}
+
+.intermission-content .small {
+    font-size: 0.8rem;
+    opacity: 0;
+    margin-bottom: 30px;
+    transition: opacity 2s ease;
+}
+
+.intermission-content .small.fade-in-active {
+    opacity: 0.6 !important;
 }
 
 /* ------------------------- SUBMISSIONS FOOTER BAR ------------------------- */
 
 #submits {
-    font-family: Redaction, Arial, sans-serif;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
 
+    position: relative; 
+    bottom: auto;
+    left: auto;
+    
+    display: block; 
+    opacity: 1; 
+    
+    width: 100%;
     background-color: #07020a;
-    padding: 20px 30px;
+    padding: 30px 30px;
     box-sizing: border-box;
     z-index: 100;
-
-    /* Default Hidden State */
-    display: none;
-    opacity: 0;
-    transition: opacity 1s, display 1s allow-discrete;
+    font-family: Redaction, Arial, sans-serif;
 }
 
 #submits.showing {
@@ -134,12 +261,12 @@ body {
     justify-content: center;
     width: 100%;
     max-width: 1400px;
-    /* Allow it to stretch wide */
 }
 
 /* Inputs */
 #submission-form input[type="text"],
 #submission-form textarea {
+    font-family: Redaction, Arial, sans-serif;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid #333;
     color: white;
@@ -164,11 +291,9 @@ body {
 
 #note {
     flex-grow: 1;
-    width: 180px;
+    width: 160px;
     min-width: 120px;
     resize: none;
-    height: 33px;
-    /* Match height of inputs */
 }
 
 /* ACTION AREA (Checkbox + Button) */
@@ -177,8 +302,6 @@ body {
     align-items: center;
     gap: 15px;
     padding-left: 10px;
-    border-left: 1px solid #333;
-    /* Visual separator from text inputs */
     margin-left: 10px;
 }
 
@@ -193,14 +316,18 @@ body {
     cursor: pointer;
 }
 
+.checkbox-wrapper label {
+    font-family: Redaction, Arial, sans-serif; 
+}
+
 #submit-button {
+    font-family: Redaction, Arial, sans-serif;
     background-color: rgb(202, 202, 202);
     color: #07020aff;
     border: none;
-    padding: 10px 25px;
+    padding: 4px 49px;
     font-weight: bold;
     cursor: pointer;
-    text-transform: uppercase;
     letter-spacing: 1px;
     border-radius: 2px;
 }
@@ -214,7 +341,6 @@ body {
 .credit-row {
     font-family: Redaction, Arial, sans-serif;
     text-align: center;
-    /* Centers the whole line */
     margin-bottom: 10px;
     /* Space between lines */
 }
@@ -236,15 +362,6 @@ body {
     text-transform: uppercase;
 }
 
-/* ---- Content wrapper inside sections which I'll later move off-center ---- */
-
-#welcome-page section p,
-#welcome-page section blockquote,
-#welcome-page section h1 {
-    /* Makes text boxes narrower */
-    width: 100%;
-}
-
 /* ----------- Individual section positioning - Each one different ---------- */
 
 
@@ -258,17 +375,21 @@ body {
 }
 
 #welcome-page #welcome-text p,
-#welcome-page #intro p {
-    max-width: 49ch;
+#welcome-page #intro p,
+#welcome-page #prefacePt2 p {
     text-align: justify;
 }
 
-#welcome-page #welcome-text #begin-section {
+#welcome-page #prefacePt3 {
+    align-items: flex-end;
+}
+
+#welcome-page #prefacePt1 #begin-section {
     padding: 0px;
     position: relative;
     min-height: 10vh;
     height: auto;
-    align-items: center;
+    align-items: flex-start;
 }
 
 #uncoco-quote {
@@ -277,6 +398,7 @@ body {
     padding-top: 20vh;
 }
 
+#billie-quote blockquote, 
 #uncoco-quote blockquote {
     max-width: 40ch;
     text-align: left;
@@ -285,19 +407,16 @@ body {
 }
 
 #analysis-intro {
-    align-items: flex-start;
-    text-align: justify;
-}
-
-#analysis-intro p {
-    max-width: 49ch;
-    margin-right: 5vw;
+    align-items: center;
 }
 
 #analysis-intro h1 {
-    align-items: flex-start;
-    max-width: 49ch;
-    margin-right: 5vw;
+    align-items: center;
+    text-align: center;
+}
+
+#analysis-intro p {
+    text-align: justify;
 }
 
 #tennov-quote {
@@ -314,19 +433,17 @@ body {
 
 #conclusion {
     text-align: justify;
-    align-items: flex-start;
+    align-items: flex-end;
 }
 
 #conclusion p {
-    max-width: 49ch;
     line-height: 1.8;
-    margin-left: 5vw;
     text-align: justify;
 }
 
 #conclusion h1 {
     align-items: flex-start;
-    margin-left: 5vw;
+    text-align: left;
 }
 
 #invitation {
@@ -340,32 +457,21 @@ body {
 }
 
 #invitation p {
-    max-width: 49ch;
     text-align: justify;
 }
 
-#welcome-page #final-prompt {
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding-bottom: 15vh;
-}
-
-#welcome-page #final-prompt p {
-    max-width: 40ch;
-    text-align: right;
-}
-
-#welcome-page #final-prompt h1 {
-    max-width: 40ch;
-    text-align: right;
-}
 /* ----------------------------- Lyrics styling ----------------------------- */
 
+#billie-quote blockquote,
 #uncoco-quote blockquote {
     max-width: 650px;
     font-style: italic;
     padding: 20px 40px;
     margin: 20px 0;
+}
+
+.lyrics-line {
+    font-size: 91%;
 }
 
 .lyrics-line .spanish {
@@ -377,7 +483,6 @@ body {
     font-style: italic;
     opacity: 0.5;
     display: block;
-    margin-top: 3px;
 }
 
 #tennov-quote blockquote {
@@ -387,6 +492,25 @@ body {
     font-style: italic;
     padding: 20px 40px;
     margin: 20px 0;
+}
+
+/* --------------------------------- NEW TRY -------------------------------- */
+
+#end-credits {
+    display: none; /* JS toggles this to 'flex' */
+    flex-direction: column; 
+    
+    height: 100vh; /* Fill the screen */
+    width: 100%;
+    
+    /* Animation states */
+    opacity: 0;
+    transition: opacity 1s, display 1s allow-discrete;
+}
+
+#end-credits.showing {
+    display: flex;
+    opacity: 1;
 }
 
 /* ------------------ HIDE AND SHOW END CREDITS PAGE STYLES ----------------- */
@@ -415,14 +539,17 @@ body {
 
 /* Credits Container */
 .credits-container {
+    /* Fill all space NOT used by the footer */
+    flex-grow: 1; 
+    
+    height: auto; 
+    margin-bottom: 0; 
+    
     font-family: Redaction, Arial, sans-serif;
     text-align: center;
-    height: 90vh;
-    margin-bottom: 120px;
     overflow: hidden;
     display: flex;
     align-items: flex-end;
-    /* Start from bottom */
     justify-content: center;
     position: relative;
 }
@@ -434,6 +561,13 @@ body {
 
     /* The animation that makes it scroll */
     animation: scrollUp 20s linear infinite;
+    animation-delay: 0.1s; /* Small delay to let Safari prepare */
+
+        /* Safari fixes */
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Scroll animation - moves from bottom to top */

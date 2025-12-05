@@ -61,24 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener('load', function () {
 
-
-    /* --------------------------- START PLAYING MUSIC -------------------------- */
-
-    let beginButton = document.getElementById('beginButton');
-
-    beginButton.addEventListener('click', function () {
-        // Start audio
-        audio.loop = true; // Optional: loop the audio
-        audio.volume = 0.5; // Optional: set volume (0.0 to 1.0)
-
-        audio.play().catch(error => {
-            console.log('Audio playback failed:', error);
-        });
-
-        // Scroll to next section
-        document.getElementById('intro').scrollIntoView({ behavior: 'smooth' });
-    });
-
     /* -------------------------------------------------------------------------- */
     /*                         LOAD CREDITS FROM DATABASE                         */
     /* -------------------------------------------------------------------------- */
@@ -148,7 +130,7 @@ window.addEventListener('load', function () {
                     // Create the Dots Span (Middle)
                     let dotsSpan = document.createElement('span');
                     dotsSpan.className = 'dots';
-                    dotsSpan.innerHTML = ' ....................... ';
+                    dotsSpan.innerHTML = ' .............................................. ';
 
                     // Create the Name Span (Right side)
                     let nameSpan = document.createElement('span');
@@ -231,26 +213,103 @@ window.addEventListener('load', function () {
             });
     }
 
+
     /* -------------------------------------------------------------------------- */
     /*                              PAGE TRANSITIONS                              */
     /* -------------------------------------------------------------------------- */
 
-    // Transition to end credits and submission form when the "Let's Go" button is clicked
-    goButton.addEventListener('click', function (event) {
-        event.preventDefault();
-        document.body.style.backgroundColor = '#07020aff';
-        document.body.style.color = '#ffffff';
-        document.getElementById('button').style.display = 'none';
-        document.getElementById('welcome-page').style.display = 'none';
-        showHide();
+    let intButton = document.getElementById('intButton'); // This is the "Let's Begin" button that takes you to the intermission stage
+    // TRANSITION: Welcome Page -> Intermission
+    if (intButton) {
+        intButton.addEventListener('click', function (event) {
+            event.preventDefault();
 
-        // Load all submissions into the credits
-        loadCredits();
-    });
+            // Hide Welcome Page
+            document.getElementById('welcome-page').style.display = 'none';
+
+            // Show Intermission
+            let intermission = document.getElementById('final-prompt');
+            intermission.style.display = 'flex';
+            intermission.style.flexDirection = 'column';
+            intermission.style.justifyContent = 'center';
+            intermission.style.alignItems = 'center';
+
+            // Change background to grey immediately for the "Lull"
+            document.body.style.backgroundColor = '#444444';
+            document.body.style.color = '#ffffff';
+            // 2. TRIGGER THE SEQUENCE
+            // We select the specific elements we want to fade in order
+            const contentDiv = document.querySelector('.intermission-content');
+
+            // Order of appearance: 
+            // Title -> Paragraph -> List Items (one by one) -> Note -> Button
+
+            const title = contentDiv.querySelector('h1');
+            const mainText = contentDiv.querySelector('p');
+            const listItems = contentDiv.querySelectorAll('li');
+            const smallText = contentDiv.querySelector('.small');
+            const readyButton = contentDiv.querySelector('#button');
+
+            // Helper function for delay
+            const fadeIn = (element, delay) => {
+                setTimeout(() => {
+                    element.classList.add('fade-in-active');
+                }, delay);
+            };
+
+            // THE TIMELINE (Adjust ms to change pacing)
+            let timer = 500; // Start after 0.5s
+
+            fadeIn(title, timer);
+
+            timer += 2000; // +2 seconds later
+            fadeIn(mainText, timer);
+
+            // Loop through list items
+            timer += 2000;
+            listItems.forEach((li) => {
+                fadeIn(li, timer);
+                timer += 1000; // +1 second per list item
+            });
+
+            timer += 1000;
+            fadeIn(smallText, timer);
+
+            timer += 1500;
+            fadeIn(readyButton, timer);
+        });
+    }
+
+    // TRANSITION: Intermission -> End Credits
+    if (goButton) {
+        goButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            // Change background to dark purple immediately for the "Credits"
+            document.body.style.backgroundColor = '#07020aff';
+            // // START MUSIC
+            // audio.loop = true;
+            // audio.volume = 0.3;
+            // audio.play().catch(error => {
+            //     console.log('Audio playback failed:', error);
+            // });
+            // Hide Intermission
+            document.getElementById('final-prompt').style.display = 'none';
+            // Show End Credits & Form
+            showHide(); // Triggers the .showing class on .endcreditsPage elements
+            // Load all submissions into the credits
+            loadCredits();
+        });
+    }
 
     function showHide() {
         creditsPage.forEach(page => {
-            page.classList.toggle("showing");
+            // Force display block first so opacity transition works
+            page.style.display = 'flex';
+
+            // Small delay to allow browser to register 'display' before changing 'opacity'
+            setTimeout(() => {
+                page.classList.add("showing");
+            }, 10);
         })
     }
     /* -------------------------------------------------------------------------- */
