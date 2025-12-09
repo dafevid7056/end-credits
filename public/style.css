@@ -7,6 +7,7 @@
     font-display: swap;
 }
 
+
 @font-face {
     font-family: 'Redaction';
     src: url('./fonts/Redaction-Bold.woff2') format('woff2');
@@ -493,6 +494,7 @@ h2 {
 /* Make all names uppercase */
 .credit-row .name,
 .note-container span:first-child {
+    color: #ffcc66;
     font-style: italic;
     text-transform: uppercase;
 }
@@ -719,37 +721,6 @@ h2 {
         transform: translateY(-100%);
         /* End above screen */
     }
-}
-
-/* Individual credit styling */
-.credit-item {
-    padding: 2px;
-}
-
-.credit-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.credit-role {
-    font-size: 18px;
-    font-style: italic;
-    opacity: 0.8;
-    margin-bottom: 5px;
-}
-
-.credit-song {
-    font-size: 16px;
-    opacity: 0.6;
-    margin-bottom: 5px;
-}
-
-.credit-note {
-    font-family: Redaction, Arial, sans-serif;
-    font-size: 14px;
-    opacity: 0.7;
-    font-style: italic;
 }
 
 /* Fade effect at top and bottom */

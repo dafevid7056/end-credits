@@ -3,16 +3,18 @@
 /* -------------------------------------------------------------------------- */
 
 const placeholders = [
-    { name: "Jay Tommy", role: "The Dreamer" },
-    { name: "Ophelia Duckings", role: "The Tragic Lover" },
-    { name: "Werther Miller", role: "Freckled girl", song: "Creep - Radiohead", note: "You gave me strength." },
-    { name: "Echo Batsky", role: "The Voice", song: "Dreams - Fleetwood Mac", note: "I'll always remember your kind words." },
-    { name: "Dante Burtis", role: "The Pilgrim", song: "Video Games - Lana del Rey", note: "This was possible thanks to you." },
-    { name: "Orpheus Lee", role: "Salesman" },
-    { name: "Helga Pataki", role: "Woman in pink" },
-    { name: "Michael Reeds", role: "Construction Worker" },
-    { name: "Stefano Rossi", role: "Poet on the street", song: "Mad World - Tears for Fears", note: "Great skills and a keen eye for detail." },
-    { name: "Fantine Pluck", role: "The Martyr" },
+    { name: "Sarah Jenkins", role: "My high school best friend", song: "Ribs - Lorde", note: "I miss how simple things were back then." },
+    { name: "David M.", role: "The guy from the coffee shop", song: "Instant Crush - Daft Punk" },
+    { name: "Elena Cruz", role: "Study partner", song: "The Less I Know The Better - Tame Impala", note: "Thanks for getting me through finals." },
+    { name: "Mark H.", role: "First serious boyfriend", song: "Somebody Else - The 1975" },
+    { name: "Jessica Wu", role: "Coworker", song: "As It Was - Harry Styles", note: "Work isn't the same without you." },
+    { name: "Tom", role: "Summer fling", song: "Cruel Summer - Taylor Swift" },
+    { name: "Alex P.", role: "Neighbor", song: "Heroes - David Bowie", note: "You always had the best advice." },
+    { name: "Unknown", role: "Subway stranger", song: "Mystery of Love - Sufjan Stevens" },
+    { name: "Chris D.", role: "Gym buddy", note: "Hope you're doing well, man." },
+    { name: "Rachel Green", role: "Roommate", song: "Dancing On My Own - Robyn", note: "Our kitchen dance parties were the best." },
+    { name: "Sam", role: "The one that got away", song: "Fade Into You - Mazzy Star" },
+    { name: "Liam O'Connor", role: "Mentor", song: "Landslide - Fleetwood Mac", note: "Thank you for believing in me." }
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -105,7 +107,7 @@ window.addEventListener('load', function () {
 
                 // Add opening title
                 let title = document.createElement('h1');
-                title.innerHTML = 'End Credits';
+                title.innerHTML = 'The Movie You Made Up in Your Head';
                 creditsList.appendChild(title);
 
                 /* ---------------- Credits Section 1: Cast (names and roles) --------------- */
