@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
 
@@ -27,22 +28,55 @@ renderer.setAnimationLoop(animate);
 const camera = new THREE.PerspectiveCamera(77, width / height, 0.01, 1000);
 camera.position.set(-14, 5, 0); 
 
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; // Smooth inertia
+controls.dampingFactor = 0.05;
+controls.minDistance = 5; // Minimum zoom
+controls.maxDistance = 50; // Maximum zoom
+controls.maxPolarAngle = Math.PI / 1.5; // Prevent going under the floor
+controls.target.set(0, 0, 0); // Look at center
+controls.update();
+
+// Enable mouse controls explicitly
+controls.enableRotate = true;
+controls.enableZoom = true;
+controls.enablePan = true;
+controls.mouseButtons = {
+    LEFT: THREE.MOUSE.ROTATE,
+    MIDDLE: THREE.MOUSE.DOLLY,
+    RIGHT: THREE.MOUSE.PAN
+};
 const scene = new THREE.Scene();
 
-// Mouse Tracking
-let mouseX = 0;
-let mouseY = 0;
-const sensitivity = 0.002;
+// // Mouse Tracking
+// let mouseX = 0;
+// let mouseY = 0;
+// const sensitivity = 0.002;
 
-window.addEventListener('mousemove', (event) => {
-    mouseX = (event.clientX - window.innerWidth / 2) * sensitivity;
-    mouseY = (event.clientY - window.innerHeight / 2) * sensitivity;
-});
+// window.addEventListener('mousemove', (event) => {
+//     mouseX = (event.clientX - window.innerWidth / 2) * sensitivity;
+//     mouseY = (event.clientY - window.innerHeight / 2) * sensitivity;
+// });
 
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* -------------------------------------------------------------------------- */
+/* KEYBOARD CONTROLS (ELEVATOR LOGIC)                                         */
+/* -------------------------------------------------------------------------- */
+
+const moveSpeed = 0.5;
+
+window.addEventListener('keydown', (event) => {
+    switch(event.key) {
+        case 'r': // Reset camera
+            camera.position.set(-14, 5, 0);
+            controls.target.set(0, 0, 0);
+            break;
+    }
 });
 
 // Global Uniforms
@@ -135,7 +169,7 @@ const lightModeMaterial = new THREE.PointsMaterial({
 
 const loader = new GLTFLoader();
 
-loader.load('models/Window1.glb', function (gltf) {
+loader.load('models/Windows.glb', function (gltf) {
 
     const model = gltf.scene;
     const windowGroup = new THREE.Group();
@@ -200,14 +234,7 @@ function animate() {
     let t = clock.getElapsedTime();
     gu.time.value = t;
 
-    // --- THE FIX ---
-    // Since camera is at X = -14, we need to move the LookAt target along Z 
-    // to simulate looking Left/Right.
-    // X = 0 (Fixed depth)
-    // Y = -mouseY (Up/Down)
-    // Z = mouseX (Left/Right)
-    
-    camera.lookAt(0, -mouseY * 5, mouseX * 5);
+    controls.update(); // This must be called every frame when damping is enabled
 
     renderer.render(scene, camera);
 }

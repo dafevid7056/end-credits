@@ -48,7 +48,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1;
+    z-index: 1;
     pointer-events: auto;
 }
 
@@ -189,10 +189,13 @@ h2 {
     /* Button stays centered */
 }
 
-#button,
+.button-container, 
 #intermission-button {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    /* Button stays centered */
+    width: 100%;
+    margin-top: 2rem;
 }
 
 .button {
@@ -216,6 +219,88 @@ h2 {
 #final-prompt {
     display: none;
     max-height: inherit;
+}
+
+#final-message {
+    position: absolute;
+    top: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    font-family: 'Feroniapi', serif;
+    font-size: 3rem;
+    color: #1a334d;
+    text-align: center;
+    margin: 0;
+    text-shadow: 0 0 20px rgba(176, 196, 222, 0.6);
+}
+
+#final-submessage {
+    position: absolute;
+    top: 30vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9;
+    font-family: 'Feroniapi', sans-serif;
+    font-size: 2rem;
+    color: #1a334d;
+    text-align: center;
+    margin: 0;
+    max-width: 600px;
+    text-shadow: 0 0 10px rgba(176, 196, 222, 0.4);
+}
+
+#final-final-message {
+    position: absolute;
+    top: 65vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9;
+    font-family: 'Redaction', sans-serif;
+    font-size: 1rem;
+    color: #1a334d;
+    text-align: center;
+    margin: 0;
+    max-width: 600px;
+    text-shadow: 0 0 10px rgba(176, 196, 222, 0.4);
+}
+
+#footer-final {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Redaction', sans-serif;
+    font-size: 1rem;
+    color: #888;
+    z-index: 8;
+}
+
+#footer-instructions {
+    font-style: italic;
+    z-index: 8;
+}
+
+/* With subtle glow */
+.accent-glow {
+    color: #ffcc66;
+    text-shadow: 0 0 8px rgba(255, 204, 102, 0.4);
+}
+
+/* Bold + glow */
+.accent-bold {
+    color: #ffcc66;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 204, 102, 0.3);
+}
+
+/* Bold + glow - Light Version (for white/light backgrounds) */
+.accent-light-bold {
+    color: #ffcc66;
+    font-weight: bold;
+    text-shadow: 
+        0 0 12px rgba(176, 196, 222, 0.4),
+        0 0 24px rgba(176, 196, 222, 0.4);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -265,10 +350,6 @@ h2 {
     opacity: 0;
     margin-bottom: 30px;
     transition: opacity 2s ease;
-}
-
-.intermission-content .small.fade-in-active {
-    opacity: 0.6 !important;
 }
 
 /* ------------------------- SUBMISSIONS FOOTER BAR ------------------------- */
@@ -410,33 +491,6 @@ h2 {
 .note-container span:first-child {
     font-style: italic;
     text-transform: uppercase;
-}
-
-/* Add this to your style.css file */
-
-/* Playlist link styling */
-.credits-scroll a {
-    color: #b0c4de; /* Light steel blue */
-    font-size: 1.2rem;
-    text-decoration: underline;
-    font-weight: bold;
-    
-    /* Light outer glow effect */
-    text-shadow: 
-        0 0 5px rgba(176, 196, 222, 0.6),
-        0 0 10px rgba(176, 196, 222, 0.4),
-        0 0 15px rgba(176, 196, 222, 0.2);
-    
-    transition: all 0.3s ease;
-}
-
-/* Hover effect - enhance the glow */
-.credits-scroll a:hover {
-    color: #d4e4f7; /* Slightly lighter on hover */
-    text-shadow: 
-        0 0 15px rgba(176, 196, 222, 0.8),
-        0 0 25px rgba(176, 196, 222, 0.6),
-        0 0 35px rgba(176, 196, 222, 0.4);
 }
 
 /* ----------- Individual section positioning - Each one different ---------- */

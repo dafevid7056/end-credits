@@ -210,26 +210,26 @@ window.addEventListener('load', function () {
                 }
 
                 if (hasSubmitted) {
-                    // Add spacer before playlist
-                    let spacer4 = document.createElement('div');
-                    spacer4.style.height = '100px';
-                    creditsList.appendChild(spacer4);
 
-                    let playlistHeader = document.createElement('h2');
-                    playlistHeader.innerHTML = 'A PLAYLIST FOR YOU';
-                    creditsList.appendChild(playlistHeader);
+                    let thankyou = document.createElement('p');
+                    let playlistHeader = document.createElement('span');
+                    playlistHeader.className = 'accent-bold';
+                    playlistHeader.innerHTML = 'Credit added! ';
 
-                    let playlistInvite = document.createElement('p');
-                    playlistInvite.innerHTML = "Here's a playlist collecting the collective submissions' songs: ";
+                    let playlistInvite = document.createElement('span');
+                    playlistInvite.innerHTML = "Now, here's the soundtrack of the collective credits submissions': ";
 
                     let playlistLink = document.createElement('a');
+                    playlistLink.className = 'accent-glow';
                     playlistLink.href = 'https://open.spotify.com/playlist/3Dozjx4nvzvK7d3bfG8t0A?si=K4CABoDXSGKEuFiCYuHAqg';
-                    playlistLink.innerHTML = 'A Playlist to move on from limerence by listening to limerent songs';
+                    playlistLink.innerHTML = 'Move on from limerence by listening to limerent songs!';
                     playlistLink.target = '_blank';
                     playlistLink.rel = 'noopener noreferrer';
-
-                    playlistInvite.appendChild(playlistLink);
-                    creditsList.appendChild(playlistInvite);
+                    
+                    thankyou.appendChild(playlistHeader);
+                    thankyou.appendChild(playlistInvite);
+                    thankyou.appendChild(playlistLink);
+                    submits.appendChild(thankyou);
                 }
             })
             .catch(error => {
@@ -374,9 +374,6 @@ window.addEventListener('load', function () {
                 if (window.triggerCollapse) {
                     window.triggerCollapse();
                 }
-
-                // Show success message
-                alert('Thank you for your submission! Your credit has been added.');
 
                 // SET THE FLAG - this tells loadCredits() to show the playlist
                 hasSubmitted = true;

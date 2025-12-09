@@ -23,6 +23,21 @@ db.connect();
 app.use('/', express.static('public'));
 app.use(express.json());
 
+
+// /* --------------------- TEMPORARY: DATABASE RESET ROUTE -------------------- */
+
+
+// app.get('/reset', async (req, res) => {
+//     try {
+//         // This deletes EVERYTHING in the submissions collection
+//         await db.delete('submissions');
+//         console.log("Database cleared!");
+//         res.send("Database has been reset. All ghosts are gone.");
+//     } catch (error) {
+//         res.status(500).send("Error clearing database: " + error);
+//     }
+// });
+
 // -------------------------------------------------------------------------- //
 //                                 POST ROUTE                                 //
 // -------------------------------------------------------------------------- //
