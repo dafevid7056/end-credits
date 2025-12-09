@@ -219,7 +219,6 @@ h2 {
 #final-prompt {
     display: none;
     max-height: inherit;
-    pointer-events: none;
 }
 
 #final-message {
@@ -278,7 +277,6 @@ h2 {
     font-size: 1rem;
     color: #888;
     z-index: 8;
-    pointer-events: none;
 }
 
 #footer-instructions {
