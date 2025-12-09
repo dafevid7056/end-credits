@@ -219,6 +219,7 @@ h2 {
 #final-prompt {
     display: none;
     max-height: inherit;
+    pointer-events: none;
 }
 
 #final-message {
@@ -233,6 +234,7 @@ h2 {
     text-align: center;
     margin: 0;
     text-shadow: 0 0 20px rgba(176, 196, 222, 0.6);
+    pointer-events: none;
 }
 
 #final-submessage {
@@ -246,8 +248,9 @@ h2 {
     color: #1a334d;
     text-align: center;
     margin: 0;
-    max-width: 600px;
+    max-width: 700px;
     text-shadow: 0 0 10px rgba(176, 196, 222, 0.4);
+    pointer-events: none;
 }
 
 #final-final-message {
@@ -263,6 +266,7 @@ h2 {
     margin: 0;
     max-width: 600px;
     text-shadow: 0 0 10px rgba(176, 196, 222, 0.4);
+    pointer-events: none;
 }
 
 #footer-final {
@@ -274,11 +278,13 @@ h2 {
     font-size: 1rem;
     color: #888;
     z-index: 8;
+    pointer-events: none;
 }
 
 #footer-instructions {
     font-style: italic;
     z-index: 8;
+    pointer-events: none;
 }
 
 /* With subtle glow */
