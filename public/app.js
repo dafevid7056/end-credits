@@ -27,6 +27,7 @@ let hide = document.getElementById('hide');
 let submitButton = document.getElementById('submit-button');
 let goButton = document.getElementById('goButton');
 const creditsPage = document.querySelectorAll(".endcreditsPage");
+let hasSubmitted = false; // Track if user has submitted
 
 /* -------------------------------------------------------------------------- */
 /*                    HTML SECTIONS SCROLLING FADING EFFECT                   */
@@ -207,6 +208,29 @@ window.addEventListener('load', function () {
                         creditsList.appendChild(noteRow);
                     }
                 }
+
+                if (hasSubmitted) {
+                    // Add spacer before playlist
+                    let spacer4 = document.createElement('div');
+                    spacer4.style.height = '100px';
+                    creditsList.appendChild(spacer4);
+
+                    let playlistHeader = document.createElement('h2');
+                    playlistHeader.innerHTML = 'A PLAYLIST FOR YOU';
+                    creditsList.appendChild(playlistHeader);
+
+                    let playlistInvite = document.createElement('p');
+                    playlistInvite.innerHTML = "Here's a playlist collecting the collective submissions' songs: ";
+
+                    let playlistLink = document.createElement('a');
+                    playlistLink.href = 'https://open.spotify.com/playlist/3Dozjx4nvzvK7d3bfG8t0A?si=K4CABoDXSGKEuFiCYuHAqg';
+                    playlistLink.innerHTML = 'A Playlist to move on from limerence by listening to limerent songs';
+                    playlistLink.target = '_blank';
+                    playlistLink.rel = 'noopener noreferrer';
+
+                    playlistInvite.appendChild(playlistLink);
+                    creditsList.appendChild(playlistInvite);
+                }
             })
             .catch(error => {
                 console.error('Error loading credits:', error);
@@ -234,10 +258,12 @@ window.addEventListener('load', function () {
             intermission.style.justifyContent = 'center';
             intermission.style.alignItems = 'center';
 
-            // Change background to grey immediately for the "Lull"
-            document.body.style.backgroundColor = '#444444';
-            document.body.style.color = '#ffffff';
-            // 2. TRIGGER THE SEQUENCE
+            // Change background to dark prussian blue immediately for the "Lull"
+            let button = document.getElementById('goButton');
+            document.body.style.backgroundColor = '#05111a';
+            document.body.style.color = '#b0c4de';
+            button.style.color = '#b0c4de';
+            // TRIGGER THE SEQUENCE
             // We select the specific elements we want to fade in order
             const contentDiv = document.querySelector('.intermission-content');
 
@@ -257,16 +283,16 @@ window.addEventListener('load', function () {
                 }, delay);
             };
 
-            // THE TIMELINE (Adjust ms to change pacing)
+            // Adjust ms to change speed of sequence
             let timer = 500; // Start after 0.5s
 
             fadeIn(title, timer);
 
-            timer += 2000; // +2 seconds later
+            timer += 3000; // +3 seconds later
             fadeIn(mainText, timer);
 
             // Loop through list items
-            timer += 2000;
+            timer += 3000;
             listItems.forEach((li) => {
                 fadeIn(li, timer);
                 timer += 1000; // +1 second per list item
@@ -284,8 +310,7 @@ window.addEventListener('load', function () {
     if (goButton) {
         goButton.addEventListener('click', function (event) {
             event.preventDefault();
-            // Change background to dark purple immediately for the "Credits"
-            document.body.style.backgroundColor = '#07020aff';
+            document.body.style.color = '#fefefe';
             // // START MUSIC
             // audio.loop = true;
             // audio.volume = 0.3;
@@ -345,8 +370,16 @@ window.addEventListener('load', function () {
                 songForm.value = '';
                 hide.checked = false;
 
+                // TRIGGER THE 3D COLLAPSE
+                if (window.triggerCollapse) {
+                    window.triggerCollapse();
+                }
+
                 // Show success message
                 alert('Thank you for your submission! Your credit has been added.');
+
+                // SET THE FLAG - this tells loadCredits() to show the playlist
+                hasSubmitted = true;
 
                 // Reload the credits to show the new submission
                 loadCredits();

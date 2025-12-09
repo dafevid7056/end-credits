@@ -8,14 +8,25 @@ import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
 
 const width = window.innerWidth, height = window.innerHeight;
 
+
+/* -------------------- RAYCASTING SETUP (The Laser Beam) ------------------- */
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2(); // This holds X/Y coordinates from -1 to 1
+
+// The projection plane
+// Vector3(0, 0, 1) means the wall faces the camera.
+// -2.0 places the plane at Z = 2.0 (the camera is at Z=3.0)
+const collapsePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -2.0);
+
 // SELECT THE EXISTING CANVAS
 const canvas = document.querySelector('#three-bg');
 
 // PASS IT TO THE RENDERER
 const renderer = new THREE.WebGLRenderer({
-	canvas: canvas,
-	antialias: true,
-	alpha: true
+    canvas: canvas,
+    antialias: true,
+    alpha: true
 });
 
 renderer.setSize(width, height);
@@ -28,10 +39,13 @@ camera.position.set(2, 1, 5);
 
 const scene = new THREE.Scene();
 
+// Global Uniforms
 let gu = {
-    time: { value: 0 }
+    time: { value: 0 },
+    collapse: { value: 0 },
+    // this vector stores the 3D position of the mouse
+    cursorPos: { value: new THREE.Vector3(0, 0, 0) } 
 };
-
 /* -------------------------------------------------------------------------- */
 /*                               MOUSE CONTROLS                               */
 /* -------------------------------------------------------------------------- */
@@ -39,91 +53,125 @@ let gu = {
 let mouseX = 0;
 let mouseY = 0;
 
-// remember that lower number = smaller camera movement
+// mouse sensitivity: remember that lower number = smaller camera movement
 const sensitivity = 0.002;
 
 window.addEventListener('mousemove', (event) => {
-	// This works by getting the mouse position in pixels, subtracting half the screen width/height to make the center (0,0) and then multiplying by sensitivity to scale it down
-	mouseX = (event.clientX - window.innerWidth / 2) * sensitivity;
-	mouseY = (event.clientY - window.innerHeight / 2) * sensitivity;
+    // Camera Rotation logic
+    mouseX = (event.clientX - window.innerWidth / 2) * sensitivity;
+    mouseY = (event.clientY - window.innerHeight / 2) * sensitivity;
+
+    // Logic for Raycaster: a straight line from camera through mouse pointer
+    // Convert mouse pixels to a range of -1 (Left/Bottom) to +1 (Right/Top)
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 });
 
-// Handle window resize
+// this handles window resize
 window.addEventListener("resize", () => {
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-	renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-/* -------------------------------------------------------------------------- */
-/*                              BACKGROUND SCENE                              */
-/* -------------------------------------------------------------------------- */
-
-// Add some light so we can see the model. I chose a HemisphereLight over a DirectionalLight for softer shadows.
-const hemiLight = new THREE.HemisphereLight(0xf0fbff, 0x080820, 2);
-scene.add(hemiLight);
-
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-directionalLight.position.set(1, 1, 1);
-scene.add(directionalLight);
 
 /* -------------------------------------------------------------------------- */
 /*                            DREAMLIKE POINT CLOUD                           */
 /* -------------------------------------------------------------------------- */
 
-// This is a reusable snippet to create a point cloud material with animated, glowing dots
 const dreamMaterial = new THREE.PointsMaterial({
-    color: 0xffffff, // White dots
-    size: 0.05,      // Base size of dots (Adjust this if they are too big!)
+    color: 0xffffff, 
+    size: 0.04,
     transparent: true,
-    opacity: 0.8,
+    opacity: 0.9,
     depthWrite: false,
-    blending: THREE.AdditiveBlending, // Makes overlapping dots glow
+    blending: THREE.NormalBlending, 
+    
     onBeforeCompile: shader => {
         shader.uniforms.time = gu.time;
-        // This injects the GLSL code to animate the dots
+        shader.uniforms.collapse = gu.collapse;
+        shader.uniforms.cursorPos = gu.cursorPos;
+
         shader.vertexShader = `
       uniform float time;
-      varying float vSinVal;
+      uniform float collapse;
+      uniform vec3 cursorPos;
+      varying float vRandom;
+      varying float vDist; 
       ${shader.vertexShader}
     `.replace(
             `#include <begin_vertex>`,
             `#include <begin_vertex>
+        
         vec3 wPos = vec3(modelMatrix * vec4(position, 1.));
+        
+        // SUBTLE FLOATING
+        float t = time * 0.5;
+        wPos.y += sin(t * 0.5 + wPos.x) * 0.05;
+        
+        // COLLAPSE LOGIC
+        vec3 targetPos = vec3(0.0, 0.0, 2.5); 
+        wPos = mix(wPos, targetPos, collapse);
+
+        transformed = (viewMatrix * vec4(wPos, 1.0)).xyz;
+        
+        vRandom = fract(sin(dot(position.xyz, vec3(12.9898, 78.233, 54.53))) * 43758.5453);
+
+        // LIDAR DISTANCE FALLOFF
+        float distToScanner = distance(wPos, targetPos);
+        vDist = distToScanner; 
+        float lidarFalloff = 1.0 / (1.0 + distToScanner * distToScanner * 0.01);
       `
         ).replace(
             `gl_PointSize = size;`,
             `
-      float t = time * 1.0;
-      // Animate Y position slightly
-      wPos.y -= t * 0.2; 
-      
-      // Calculate a wave effect
-      float sinVal = sin(mod(wPos.y * 5.0, 6.283)) * 0.5 + 0.5;
-      vSinVal = sinVal;
-      
-      // Change size based on the wave
-      float sizeChange = 0.5 + sinVal * 2.0; 
-      gl_PointSize = size * sizeChange;`
-        );
+      // VANISH LOGIC
+      float threshold = 1.0 - (collapse * 1.2);
+      float vanish = step(0.0, threshold - vRandom); 
 
+      // KILL SWITCH
+      // If collapse is nearly finished (> 0.95), force everything to zero size.
+      // This stops the GPU from calculating the dense center cluster.
+      if (collapse > 0.95) {
+          vanish = 0.0;
+      }
+
+      gl_PointSize = size * vanish * lidarFalloff;
+      `
+        ).replace(
+            `#include <project_vertex>`,
+            `
+            vec4 mvPosition = vec4( transformed, 1.0 );
+            gl_Position = projectionMatrix * mvPosition;
+            gl_PointSize *= ( scale / - mvPosition.z );
+            `
+        );
+        // A new fragment shader to make the points blueish with gold highlights
         shader.fragmentShader = `
-      varying float vSinVal;
+      varying float vRandom;
+      varying float vDist;
       ${shader.fragmentShader}
     `.replace(
             `#include <clipping_planes_fragment>`,
             `#include <clipping_planes_fragment>
-        // Make points round instead of square
-        float dist = length(gl_PointCoord.xy - 0.5);
-        if (dist > 0.5) discard;
-      `
+            `
         ).replace(
             `#include <alphatest_fragment>`,
             `#include <alphatest_fragment>
-        // Color shift (Aqua to White)
-        diffuseColor.rgb = mix(vec3(1.0, 1.0, 1.0), vec3(0.0, 1.0, 1.0), vSinVal);
-        float f = smoothstep(0.5, 0.1, dist);
-        diffuseColor.a = f * diffuseColor.a;
+        
+        vec3 blueDark = vec3(0.1, 0.2, 0.3); 
+        vec3 blueMist = vec3(0.3, 0.45, 0.6); 
+        vec3 goldColor = vec3(1.0, 0.8, 0.4); 
+
+        vec3 finalColor;
+
+        if (vRandom < 0.95) {
+            finalColor = mix(blueDark, blueMist, vRandom * 1.1);
+        } else {
+            finalColor = goldColor;
+        }
+
+        diffuseColor.rgb = finalColor;
+        diffuseColor.a = 1.0;
       `
         );
     }
@@ -136,44 +184,104 @@ const dreamMaterial = new THREE.PointsMaterial({
 // Initialize Loader
 const loader = new GLTFLoader();
 
-// Load the model
-loader.load('models/Bangkok_Clean.glb', function (gltf) {
+loader.load('models/Bangkok_Clean_V4.glb', function (gltf) {
 
-	const model = gltf.scene;
-	// This creates a container for the point cloud
-	const cityGroup = new THREE.Group();
+    const model = gltf.scene;
+    const cityGroup = new THREE.Group();
 
-// Traverse every mesh in the city
+/* ------------------------------ CONFIGURATION ----------------------------- */
+
+    // LAYER 1: Area-Based POINT DENSITY (for large uniform surfaces)
+    const density = 30;
+    const maxPointsPerMesh = 4000; // Cap for big meshes
+    
+    // LAYER 2: Fixed Count POINT DENSITY (for small details)
+    const detailPointsPerMesh = 44; // Each small mesh gets this many points
+    const detailThreshold = 5; // If bounding box volume < this, use detail layer
+
+/* --------------------- LAYER 1: AREA-BASED POINT CLOUD -------------------- */
+
     model.traverse((child) => {
         if (child.isMesh) {
             
-            //SETUP SAMPLER
+            // Calculate bounding box
+            child.geometry.computeBoundingBox();
+            const bbox = child.geometry.boundingBox;
+            const size = new THREE.Vector3();
+            bbox.getSize(size);
+            
+            // Calculate volume to determine which layer this belongs to
+            const volume = size.x * size.y * size.z;
+            
+            // Skip small objects
+            if (volume < detailThreshold) return;
+            
+            // Calculate surface area
+            const surfaceArea = 2 * (size.x * size.y + size.x * size.z + size.y * size.z);
+            
+            // Calculate count based on area
+            let count = Math.ceil(surfaceArea * density);
+            count = Math.max(50, Math.min(count, maxPointsPerMesh));
+
+            // Generate points
             const sampler = new MeshSurfaceSampler(child).build();
-            
-            //HOW MANY POINTS PER MESH
-            const count = 1500; 
-            
             const vertices = [];
             const tempPosition = new THREE.Vector3();
 
-            //GENERATE POINTS
             for (let i = 0; i < count; i++) {
                 sampler.sample(tempPosition);
+                tempPosition.applyMatrix4(child.matrixWorld);
                 vertices.push(tempPosition.x, tempPosition.y, tempPosition.z);
             }
 
-            //CREATE GEOMETRY
             const pointsGeometry = new THREE.BufferGeometry();
             pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
-            //CREATE POINTS MESH
             const points = new THREE.Points(pointsGeometry, dreamMaterial);
             
             cityGroup.add(points);
         }
     });
 
-    // I have to apply the transformations to the GROUP, not the individual meshes
+    /* ----------------------- LAYER 2: DETAIL POINT CLOUD ---------------------- */
+
+    model.traverse((child) => {
+        if (child.isMesh) {
+            
+            // Calculate bounding box
+            child.geometry.computeBoundingBox();
+            const bbox = child.geometry.boundingBox;
+            const size = new THREE.Vector3();
+            bbox.getSize(size);
+            
+            // Calculate volume
+            const volume = size.x * size.y * size.z;
+            
+            // Only process small/detailed objects
+            if (volume >= detailThreshold) return;
+            
+            // Fixed point count for details
+            const count = detailPointsPerMesh;
+
+            // Generate points
+            const sampler = new MeshSurfaceSampler(child).build();
+            const vertices = [];
+            const tempPosition = new THREE.Vector3();
+
+            for (let i = 0; i < count; i++) {
+                sampler.sample(tempPosition);
+                tempPosition.applyMatrix4(child.matrixWorld);
+                vertices.push(tempPosition.x, tempPosition.y, tempPosition.z);
+            }
+
+            const pointsGeometry = new THREE.BufferGeometry();
+            pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            const points = new THREE.Points(pointsGeometry, dreamMaterial);
+            
+            cityGroup.add(points);
+        }
+    });
+
+    // Apply group transformations
     cityGroup.scale.set(0.8, 0.8, 0.8);
     cityGroup.position.set(0, -2, 0);
     cityGroup.rotation.y = THREE.MathUtils.degToRad(113);
@@ -190,19 +298,41 @@ loader.load('models/Bangkok_Clean.glb', function (gltf) {
 
 const clock = new THREE.Clock();
 
+// Control variables for the smooth transition
+let targetCollapse = 0; // We start at "Normal" (0)
+const collapseSpeed = 0.002; // LOWER = SLOWER
+
+// This function allows app.js to trigger the effect
+window.triggerCollapse = function () {
+    targetCollapse = 1; // Tell the system: "Go to Collapsed State"
+    console.log("Collapse triggered!");
+};
+
 function animate(time) {
-	// Update the time for the shader animation
     let t = clock.getElapsedTime();
     gu.time.value = t;
-	// Smooth camera movement towards mouse position
-	camera.lookAt(mouseX * 10, -mouseY * 10, 0);
-	renderer.render(scene, camera);
 
-// 	// This is a debugger to add visual helpers to see where the lights are
-// const dirHelper = new THREE.DirectionalLightHelper(directionalLight, 5);
-// scene.add(dirHelper);
+    // Only calculate the Lerp if the collapse hasn't finished
+    if (gu.collapse.value < 0.99) {
+        gu.collapse.value += (targetCollapse - gu.collapse.value) * collapseSpeed;
+    } else {
+        // If it's almost done, set it to 1 and stop calculating
+        gu.collapse.value = 1.0;
+    }
 
-// const hemiHelper = new THREE.HemisphereLightHelper(hemiLight, 5);
-// scene.add(hemiHelper);
+    // Camera Look Logic
+    camera.lookAt(mouseX * 10, -mouseY * 10, 0);
 
+    // Raycasting Logic
+    raycaster.setFromCamera(mouse, camera);
+    const intersectionPoint = new THREE.Vector3();
+    raycaster.ray.intersectPlane(collapsePlane, intersectionPoint);
+
+    if (intersectionPoint) {
+        intersectionPoint.x = Math.max(-12, Math.min(12, intersectionPoint.x));
+        intersectionPoint.y = Math.max(-8, Math.min(8, intersectionPoint.y));
+        gu.cursorPos.value.copy(intersectionPoint);
+    }
+
+    renderer.render(scene, camera);
 }

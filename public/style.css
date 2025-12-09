@@ -42,30 +42,50 @@
     /* Lets you click text 'through' the canvas */
 }
 
+#three-windows {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: auto;
+}
+
+#windowsScene {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: block;
+    opacity: 1;
+}
+
 body {
     font-family: Redaction, Arial, sans-serif;
     color: #000000;
     font-size: 100%;
     line-height: 1.6;
-    background-color: #fdfdfd;
     background-color: transparent;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: Feroniapi, Arial, sans-serif;
     margin-bottom: 1rem;
 }
 
 h1 {
-    font-size: 2.5rem;  /* Explicitly set h1 size */
+    font-size: 2.5rem;
+    /* Explicitly set h1 size */
     font-weight: 500;
 }
 
 h2 {
-    font-size: 1.8rem;  /* Explicitly set h2 size (smaller than h1) */
+    font-size: 1.8rem;
+    /* Explicitly set h2 size (smaller than h1) */
     font-weight: 500;
 }
 
@@ -74,19 +94,30 @@ h2 {
     font-size: 1.1rem;
     color: #07020a;
     margin-top: 2rem;
-    
+
     animation: bounce 2s ease-in-out infinite;
 }
+
 /* Animation for the down arrows to indicate scrolling */
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0); /* Stay at start */
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+        /* Stay at start */
     }
+
     40% {
-        transform: translateY(-10px); /* Move up */
+        transform: translateY(-10px);
+        /* Move up */
     }
+
     60% {
-        transform: translateY(-5px); /* Small little hop */
+        transform: translateY(-5px);
+        /* Small little hop */
     }
 }
 
@@ -131,7 +162,8 @@ h2 {
     width: 100%;
     max-width: 50ch;
     box-sizing: border-box;
-    text-align: left; /* Default alignment inside the box */
+    text-align: left;
+    /* Default alignment inside the box */
 }
 
 /* This ensures the text inside fills the wrapper */
@@ -168,9 +200,17 @@ h2 {
     font-size: 1.5rem;
     font-weight: bold;
     text-decoration: underline;
-    background-color: transparent;
-    border: none;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #05111a;
+    border: 1px solid currentColor;
+    padding: 8px 16px;
     cursor: pointer;
+
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.button:hover {
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 #final-prompt {
@@ -185,13 +225,16 @@ h2 {
 .intermission-content {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centers everything horizontally */
-    text-align: center;  /* Centers the text inside the blocks */
+    align-items: center;
+    /* Centers everything horizontally */
+    text-align: center;
+    /* Centers the text inside the blocks */
     max-width: 600px;
 }
 
 .intermission-content ul {
-    list-style: none; /* Remove bullets */
+    list-style: none;
+    /* Remove bullets */
     padding: 0;
     margin: 20px 0;
     text-align: center;
@@ -200,8 +243,10 @@ h2 {
 .intermission-content li {
     margin-bottom: 10px;
     font-size: 1.1rem;
-    opacity: 0; /* Hidden by default for animation */
-    transition: opacity 2s ease; /* Slow fade */
+    opacity: 0;
+    /* Hidden by default for animation */
+    transition: opacity 2s ease;
+    /* Slow fade */
 }
 
 .intermission-content h1,
@@ -230,15 +275,15 @@ h2 {
 
 #submits {
 
-    position: relative; 
+    position: relative;
     bottom: auto;
     left: auto;
-    
-    display: block; 
-    opacity: 1; 
-    
+
+    display: block;
+    opacity: 1;
+
     width: 100%;
-    background-color: #07020a;
+    background-color: #05111a;
     padding: 30px 30px;
     box-sizing: border-box;
     z-index: 100;
@@ -267,9 +312,12 @@ h2 {
 #submission-form input[type="text"],
 #submission-form textarea {
     font-family: Redaction, Arial, sans-serif;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid #333;
-    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    /* Very subtle glass effect */
+    border: 1px solid #2a3b4c;
+    /* Dark blue border */
+    color: #b0c4de;
+    /* Light steel blue text */
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 14px;
@@ -317,13 +365,13 @@ h2 {
 }
 
 .checkbox-wrapper label {
-    font-family: Redaction, Arial, sans-serif; 
+    font-family: Redaction, Arial, sans-serif;
 }
 
 #submit-button {
     font-family: Redaction, Arial, sans-serif;
-    background-color: rgb(202, 202, 202);
-    color: #07020aff;
+    background-color: #4d7399;
+    color: #05090b;
     border: none;
     padding: 4px 49px;
     font-weight: bold;
@@ -333,7 +381,9 @@ h2 {
 }
 
 #submit-button:hover {
-    background-color: #ccc;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #efefef;
+    border: 1px solid currentColor;
 }
 
 /* ------------------------------ CREDITS STYLE ----------------------------- */
@@ -362,11 +412,38 @@ h2 {
     text-transform: uppercase;
 }
 
+/* Add this to your style.css file */
+
+/* Playlist link styling */
+.credits-scroll a {
+    color: #b0c4de; /* Light steel blue */
+    font-size: 1.2rem;
+    text-decoration: underline;
+    font-weight: bold;
+    
+    /* Light outer glow effect */
+    text-shadow: 
+        0 0 5px rgba(176, 196, 222, 0.6),
+        0 0 10px rgba(176, 196, 222, 0.4),
+        0 0 15px rgba(176, 196, 222, 0.2);
+    
+    transition: all 0.3s ease;
+}
+
+/* Hover effect - enhance the glow */
+.credits-scroll a:hover {
+    color: #d4e4f7; /* Slightly lighter on hover */
+    text-shadow: 
+        0 0 15px rgba(176, 196, 222, 0.8),
+        0 0 25px rgba(176, 196, 222, 0.6),
+        0 0 35px rgba(176, 196, 222, 0.4);
+}
+
 /* ----------- Individual section positioning - Each one different ---------- */
 
 
 #welcome-page #welcome-text h1,
-#welcome-page #welcome-text h2{
+#welcome-page #welcome-text h2 {
     text-align: center;
 }
 
@@ -398,7 +475,7 @@ h2 {
     padding-top: 20vh;
 }
 
-#billie-quote blockquote, 
+#billie-quote blockquote,
 #uncoco-quote blockquote {
     max-width: 40ch;
     text-align: left;
@@ -497,12 +574,14 @@ h2 {
 /* --------------------------------- NEW TRY -------------------------------- */
 
 #end-credits {
-    display: none; /* JS toggles this to 'flex' */
-    flex-direction: column; 
-    
-    height: 100vh; /* Fill the screen */
+    display: none;
+    /* JS toggles this to 'flex' */
+    flex-direction: column;
+
+    height: 100vh;
+    /* Fill the screen */
     width: 100%;
-    
+
     /* Animation states */
     opacity: 0;
     transition: opacity 1s, display 1s allow-discrete;
@@ -540,11 +619,11 @@ h2 {
 /* Credits Container */
 .credits-container {
     /* Fill all space NOT used by the footer */
-    flex-grow: 1; 
-    
-    height: auto; 
-    margin-bottom: 0; 
-    
+    flex-grow: 1;
+
+    height: auto;
+    margin-bottom: 0;
+
     font-family: Redaction, Arial, sans-serif;
     text-align: center;
     overflow: hidden;
@@ -560,10 +639,11 @@ h2 {
     text-align: center;
 
     /* The animation that makes it scroll */
-    animation: scrollUp 20s linear infinite;
-    animation-delay: 0.1s; /* Small delay to let Safari prepare */
+    animation: scrollUp 88s linear infinite;
+    animation-delay: 0.1s;
+    /* Small delay to let Safari prepare */
 
-        /* Safari fixes */
+    /* Safari fixes */
     will-change: transform;
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -622,7 +702,7 @@ h2 {
     left: 0;
     width: 100%;
     height: 100px;
-    background: linear-gradient(to bottom, #07020aff, transparent);
+    background: linear-gradient(to bottom, #05111a, transparent);
     z-index: 1;
 }
 
@@ -633,6 +713,6 @@ h2 {
     left: 0;
     width: 100%;
     height: 150px;
-    background: linear-gradient(to top, #07020aff, transparent);
+    background: linear-gradient(to top, #05111a, transparent);
     z-index: 1;
 }
