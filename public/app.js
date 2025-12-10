@@ -1,6 +1,7 @@
 /* -------------------------------------------------------------------------- */
-/*                      PLACEHOLDER CREDITS (THE GHOSTS)                      */
+/*                             PLACEHOLDER CREDITS                            */
 /* -------------------------------------------------------------------------- */
+
 
 const placeholders = [
     { name: "Sarah Jenkins", role: "My high school best friend", song: "Ribs - Lorde", note: "I miss how simple things were back then." },
