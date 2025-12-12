@@ -1,4 +1,6 @@
-/* ---------------------------------- FONTS --------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                                    FONTS                                   */
+/* -------------------------------------------------------------------------- */
 
 @font-face {
     font-family: 'Feroniapi';
@@ -28,7 +30,9 @@
     font-style: normal;
 }
 
-/* ------------------------ BODY AND GENERAL STYLING ------------------------ */
+/* -------------------------------------------------------------------------- */
+/*                          BODY AND GENERAL STYLING                          */
+/* -------------------------------------------------------------------------- */
 
 #three-bg {
     position: fixed;
@@ -122,6 +126,10 @@ h2 {
     }
 }
 
+/* -------------------------------------------------------------------------- */
+/*                            WELCOME PAGE SECTION                            */
+/* -------------------------------------------------------------------------- */
+
 #welcome-page {
     /* This creates the scroll behavior */
     height: 100vh;
@@ -137,7 +145,6 @@ h2 {
     width: 100%;
     box-sizing: border-box;
 
-    /* Layout - Centers the text perfectly */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -150,11 +157,10 @@ h2 {
     scroll-snap-align: start;
     /* The top of the section snaps to top of window */
 
-    /* Initial Animation State (Hidden) */
     opacity: 0;
     /* Slow fade */
     transition: all 1s ease-out;
-    /* Prevents interaction when not visible */
+    /* Prevents mouse interaction when not visible */
     pointer-events: none;
 }
 
@@ -185,9 +191,12 @@ h2 {
     /* Clicks allowed for text objects and buttons */
 }
 
+/* -------------------------------------------------------------------------- */
+/*                               BUTTONS & FORMS                              */
+/* -------------------------------------------------------------------------- */
+
 #begin-section {
     align-items: center;
-    /* Button stays centered */
 }
 
 .button-container, 
@@ -221,6 +230,10 @@ h2 {
     display: none;
     max-height: inherit;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                FINAL MESSAGE                               */
+/* -------------------------------------------------------------------------- */
 
 #final-message {
     position: absolute;
@@ -286,13 +299,13 @@ h2 {
     pointer-events: none;
 }
 
-/* With subtle glow */
+/* ----------------------------- ACCENT CLASSES ----------------------------- */
+
 .accent-glow {
     color: #ffcc66;
     text-shadow: 0 0 8px rgba(255, 204, 102, 0.4);
 }
 
-/* Bold + glow */
 .accent-bold {
     color: #ffcc66;
     font-weight: bold;
@@ -316,9 +329,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Centers everything horizontally */
     text-align: center;
-    /* Centers the text inside the blocks */
     max-width: 600px;
 }
 
@@ -334,7 +345,6 @@ h2 {
     margin-bottom: 10px;
     font-size: 1.1rem;
     opacity: 0;
-    /* Hidden by default for animation */
     transition: opacity 2s ease;
     /* Slow fade */
 }
@@ -383,7 +393,6 @@ h2 {
     opacity: 1;
 }
 
-/* Form Layout */
 #submission-form {
     display: flex;
     flex-wrap: wrap;
@@ -394,23 +403,18 @@ h2 {
     max-width: 1400px;
 }
 
-/* Inputs */
 #submission-form input[type="text"],
 #submission-form textarea {
     font-family: Redaction, Arial, sans-serif;
     background: rgba(255, 255, 255, 0.05);
-    /* Very subtle glass effect */
     border: 1px solid #2a3b4c;
-    /* Dark blue border */
     color: #b0c4de;
-    /* Light steel blue text */
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 14px;
     outline: none;
 }
 
-/* Specific Widths */
 #name {
     width: 120px;
 }
@@ -430,7 +434,6 @@ h2 {
     resize: none;
 }
 
-/* ACTION AREA (Checkbox + Button) */
 .submit-wrapper {
     display: flex;
     align-items: center;
@@ -472,7 +475,9 @@ h2 {
     border: 1px solid currentColor;
 }
 
-/* ------------------------------ CREDITS STYLE ----------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                            ROLLING CREDITS STYLE                           */
+/* -------------------------------------------------------------------------- */
 
 .credit-row {
     font-family: Redaction, Arial, sans-serif;
@@ -499,7 +504,9 @@ h2 {
     text-transform: uppercase;
 }
 
-/* ----------- Individual section positioning - Each one different ---------- */
+/* -------------------------------------------------------------------------- */
+/*                             SECTION POSITIONING                            */
+/* -------------------------------------------------------------------------- */
 
 
 #welcome-page #welcome-text h1,
@@ -597,7 +604,9 @@ h2 {
     text-align: justify;
 }
 
-/* ----------------------------- Lyrics styling ----------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                               LYRICS STYLING                               */
+/* -------------------------------------------------------------------------- */
 
 #billie-quote blockquote,
 #uncoco-quote blockquote {
@@ -625,24 +634,20 @@ h2 {
 #tennov-quote blockquote {
     max-width: 580px;
     margin-left: 80px;
-    /* Pushes it slightly inward from left */
     font-style: italic;
     padding: 20px 40px;
     margin: 20px 0;
 }
 
-/* --------------------------------- NEW TRY -------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                              END CREDITS PAGE                              */
+/* -------------------------------------------------------------------------- */
 
 #end-credits {
     display: none;
-    /* JS toggles this to 'flex' */
     flex-direction: column;
-
     height: 100vh;
-    /* Fill the screen */
     width: 100%;
-
-    /* Animation states */
     opacity: 0;
     transition: opacity 1s, display 1s allow-discrete;
 }
@@ -651,8 +656,6 @@ h2 {
     display: flex;
     opacity: 1;
 }
-
-/* ------------------ HIDE AND SHOW END CREDITS PAGE STYLES ----------------- */
 
 .endcreditsPage {
 
@@ -674,16 +677,15 @@ h2 {
     }
 }
 
-/* ------------------------ ROLLING CREDITS ANIMATION ----------------------- */
+/* -------------------------------------------------------------------------- */
+/*                          CREDITS SCROLL ANIMATION                          */
+/* -------------------------------------------------------------------------- */
 
-/* Credits Container */
 .credits-container {
     /* Fill all space NOT used by the footer */
     flex-grow: 1;
-
     height: auto;
     margin-bottom: 0;
-
     font-family: Redaction, Arial, sans-serif;
     text-align: center;
     overflow: hidden;
@@ -693,16 +695,11 @@ h2 {
     position: relative;
 }
 
-/* The scrolling credits */
 .credits-scroll {
     max-width: 600px;
     text-align: center;
-
-    /* The animation that makes it scroll */
     animation: scrollUp 88s linear infinite;
     animation-delay: 0.1s;
-    /* Small delay to let Safari prepare */
-
     /* Safari fixes */
     will-change: transform;
     transform: translateZ(0);

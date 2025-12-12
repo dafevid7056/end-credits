@@ -21,7 +21,6 @@ const placeholders = [
 /* -------------------------------------------------------------------------- */
 /*                              GLOBAL VARIABLES                              */
 /* -------------------------------------------------------------------------- */
-var audio = new Audio('/sounds/limerence.m4a')
 let nameForm = document.getElementById('name');
 let roleForm = document.getElementById('role');
 let noteForm = document.getElementById('note');
@@ -33,8 +32,9 @@ const creditsPage = document.querySelectorAll(".endcreditsPage");
 let hasSubmitted = false; // Track if user has submitted
 
 /* -------------------------------------------------------------------------- */
-/*                    HTML SECTIONS SCROLLING FADING EFFECT                   */
+/*                     OBSERVER: SCROLL FADE HTML ELEMENTS                    */
 /* -------------------------------------------------------------------------- */
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -63,11 +63,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                MAIN FUNCTION                               */
+/* -------------------------------------------------------------------------- */
+
 window.addEventListener('load', function () {
 
-    /* -------------------------------------------------------------------------- */
-    /*                         LOAD CREDITS FROM DATABASE                         */
-    /* -------------------------------------------------------------------------- */
+    /* ----------------------- LOAD CREDITS FROM DATABASE ----------------------- */
 
     function loadCredits() {
         fetch('/submissions')
@@ -95,7 +97,6 @@ window.addEventListener('load', function () {
                 // If I need placeholders, grab them from the local array
                 if (placeholdersNeeded > 0) {
                     for (let i = 0; i < placeholdersNeeded; i++) {
-                        // Use the modulo operator (%) to loop the placeholder list. If we need more ghosts than we have defined then they will start to repeat.
                         let ghost = placeholders[i % placeholders.length];
                         finalCreditsList.push(ghost);
                     }
@@ -124,7 +125,7 @@ window.addEventListener('load', function () {
 
                     // Create the row container
                     let castRow = document.createElement('div');
-                    castRow.className = 'credit-row'; // We will use this class for CSS later
+                    castRow.className = 'credit-row';
 
                     // Create the Role Span (Left side)
                     let roleSpan = document.createElement('span');
@@ -314,13 +315,6 @@ window.addEventListener('load', function () {
         goButton.addEventListener('click', function (event) {
             event.preventDefault();
             document.body.style.color = '#fefefe';
-            // // START MUSIC
-            // audio.loop = true;
-            // audio.volume = 0.3;
-            // audio.play().catch(error => {
-            //     console.log('Audio playback failed:', error);
-            // });
-            // Hide Intermission
             document.getElementById('final-prompt').style.display = 'none';
             // Show End Credits & Form
             showHide(); // Triggers the .showing class on .endcreditsPage elements
@@ -331,10 +325,7 @@ window.addEventListener('load', function () {
 
     function showHide() {
         creditsPage.forEach(page => {
-            // Force display block first so opacity transition works
             page.style.display = 'flex';
-
-            // Small delay to allow browser to register 'display' before changing 'opacity'
             setTimeout(() => {
                 page.classList.add("showing");
             }, 10);

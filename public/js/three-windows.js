@@ -48,16 +48,6 @@ controls.mouseButtons = {
 };
 const scene = new THREE.Scene();
 
-// // Mouse Tracking
-// let mouseX = 0;
-// let mouseY = 0;
-// const sensitivity = 0.002;
-
-// window.addEventListener('mousemove', (event) => {
-//     mouseX = (event.clientX - window.innerWidth / 2) * sensitivity;
-//     mouseY = (event.clientY - window.innerHeight / 2) * sensitivity;
-// });
-
 window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -96,6 +86,7 @@ const lightModeMaterial = new THREE.PointsMaterial({
     depthWrite: false,
     blending: THREE.NormalBlending,
     
+    // Inject Custom Shader Logic (Light Mode + Square Points).
     onBeforeCompile: shader => {
         shader.uniforms.time = gu.time;
 
@@ -109,7 +100,7 @@ const lightModeMaterial = new THREE.PointsMaterial({
         
         vec3 wPos = vec3(modelMatrix * vec4(position, 1.));
         
-        // Gentle Floating
+        // Animation: Vertical Float
         float t = time * 0.5;
         wPos.y += sin(t * 0.5 + wPos.x) * 0.05;
 

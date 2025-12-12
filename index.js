@@ -1,6 +1,6 @@
 require('dotenv').config();
-let express = require('express');
-let app = express();
+const express = require('express');
+const app = express();
 
 /* -------------------------------------------------------------------------- */
 /*                              QUICKMONGO SETUP                              */
@@ -9,7 +9,7 @@ let app = express();
 const { Database } = require("quickmongo"); 
 const db = new Database(process.env.MONGODB_URI);
 
-// Connect to the termud
+// Connect to the database
 db.on("ready", () => {
     console.log("MongoDB connected");
 });
@@ -19,6 +19,10 @@ db.on("error", (err) => {
 });
 
 db.connect();
+
+/* -------------------------------------------------------------------------- */
+/*                                EXPRESS SETUP                               */
+/* -------------------------------------------------------------------------- */
 
 app.use('/', express.static('public'));
 app.use(express.json());
@@ -38,13 +42,13 @@ app.use(express.json());
 //     }
 // });
 
-// -------------------------------------------------------------------------- //
-//                                 POST ROUTE                                 //
-// -------------------------------------------------------------------------- //
+/* -------------------------------------------------------------------------- */
+/*                                   ROUTES                                   */
+/* -------------------------------------------------------------------------- */
 
-// RECEIVE DATA FROM SUBMISSION FORM
-app.post('/submit', async (request, response) => {
-    let submissionData = request.body;
+// POST: SUBMIT CREDIT
+app.post('/submit', async (req, res) => {
+    let submissionData = req.body;
     
     // Create the object with the data pairs
     let obj = {
@@ -61,19 +65,17 @@ try {
         await db.push('submissions', obj);
 
         console.log('New submission saved to cloud:', obj);
-        response.json({ status: 'success', message: 'Submission received!' });
+        res.json({ status: 'success', message: 'Submission received!' });
 
     } catch (error) {
         console.error('Database error:', error);
-        response.json({ status: 'error', message: 'Failed to save submission' });
+        res.json({ status: 'error', message: 'Failed to save submission' });
     }
 });
 
-// -------------------------------------------------------------------------- //
-//                                  GET ROUTE                                 //
-// -------------------------------------------------------------------------- //
+// GET ROUTE: FETCH ALL SUBMISSIONS
 
-app.get('/submissions', async (request, response) => {
+app.get('/submissions', async (req, res) => {
     try {
         // FROM DATABASE: Fetch the submissions array
         let allSubmissions = await db.get('submissions');
@@ -83,7 +85,7 @@ app.get('/submissions', async (request, response) => {
             allSubmissions = [];
         }
 
-        // FILTER REDACTED NAMES
+        // Hide names for users who requested privacy
         let filteredDocs = allSubmissions.map(doc => {
             if (doc.hide === true) {
                 return { ...doc, name: '[redacted]' };
@@ -92,15 +94,18 @@ app.get('/submissions', async (request, response) => {
         });
         
         // Send it to the frontend
-        response.json({ status: 'success', data: filteredDocs });
+        res.json({ status: 'success', data: filteredDocs });
 
     } catch (error) {
         console.error('Database error:', error);
-        response.json({ status: 'error', data: [] });
+        res.json({ status: 'error', data: [] });
     }
 });
 
-// Start Server
+/* -------------------------------------------------------------------------- */
+/*                                START SERVER                                */
+/* -------------------------------------------------------------------------- */
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:3000`);
